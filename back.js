@@ -1,5 +1,8 @@
-const file = require('fs');
+const fs = require('fs');
 const express = require('express');
+const bodyParser = require('body-parser');
+
+const jp = bodyParser.json();
 
 const PORT = 8080;
 const HOSTNAME = '127.0.0.1';
@@ -18,13 +21,19 @@ const app = express();
 
 app.route('/data')
 	.get( (req, res) => {
-		res.send(JSON.stringify(JSON.parse(file.readFileSync('database.json'))));
+		res.send(JSON.stringify(JSON.parse(fs.readFileSync('./database.json'))));
 	})
 	.put( (req, res) => {
 		res.send('response to PUT method');
 	})
-	.post( (req, res) => {
-		res.send('response to POST method');
+	.post(jp, (req, res) => {
+		try {
+			//fs.writeFileSync('./database.json', JSON.stringify(req.body));
+			fs.appendFile('./database.json', JSON.stringify(req.body), (err) => err && console.error(err));
+		} catch (err) {
+			res.send('Error has been occured: ' + err);
+		}
+		res.send('Successfully added data.');
 	})
 	.delete( (req, res) => {
 		res.send('response to DELETE method');
