@@ -30,10 +30,12 @@ app.route('/data')
 	})
 	.post(jp, (req, res) => {
 		try {
+			const clubs = JSON.parse(fs.readFileSync('./database.json'));
 			//fs.writeFileSync('./database.json', JSON.stringify(req.body));
+			clubs.push(req.body);
 			fs.writeFile(
 				'./database.json',
-				JSON.stringify(req.body), (err) => err && res.send('Error has been occured while json stringify' + err)
+				JSON.stringify(clubs), (err) => err && res.send('Error has been occured while json stringify' + err)
 		);
 		} catch (err) {
 			res.send('Error has been occured: ' + err);
