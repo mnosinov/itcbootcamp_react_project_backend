@@ -25,8 +25,23 @@ app.route('/data')
 		res.setHeader('Access-Control-Allow-Methods', 'GET,POST');
 		res.send(JSON.stringify(JSON.parse(fs.readFileSync('./database.json'))));
 	})
-	.put( (req, res) => {
-		res.send('response to PUT method');
+	.put(jp, (req, res) => {
+		let test = 12;
+		try {
+			const clubs = JSON.parse(fs.readFileSync('./database.json'));
+			clubs.forEach( club => {
+				test = req.body.newCaptain;
+				if (club.name === req.body.name) {
+					club.captain = req.body.newCaptain;
+				}
+			} );
+			fs.writeFile(
+				'./database.json',
+				JSON.stringify(clubs, null, 2), (err) => err && res.send('Error has been occured while json stringify' + err)
+			);
+		} catch(err) {
+		}
+		res.send('response to PUT method ' + test);
 	})
 	.post(jp, (req, res) => {
 		try {
@@ -35,8 +50,8 @@ app.route('/data')
 			clubs.push(req.body);
 			fs.writeFile(
 				'./database.json',
-				JSON.stringify(clubs), (err) => err && res.send('Error has been occured while json stringify' + err)
-		);
+				JSON.stringify(clubs, null, 2), (err) => err && res.send('Error has been occured while json stringify' + err)
+			);
 		} catch (err) {
 			res.send('Error has been occured: ' + err);
 		}
