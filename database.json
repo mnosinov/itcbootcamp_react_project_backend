@@ -1,9 +1,6 @@
 {
-	"name": "Maximus",
-	"surName": "Meridius",
-	"age": 45,
-	"characteristics": {
-		"skill": "MS Boxing"
-	}
+	"name": "Manchester United",
+	"coach": "Sir Alex Ferguson",
+	"captain": "Bruno Fernandes"
 }
 
