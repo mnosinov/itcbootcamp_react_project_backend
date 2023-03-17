@@ -3,15 +3,5 @@
     "name": "Barcelona1",
     "coach": "John Doe",
     "captain": "Jane Doe"
-  },
-  {
-    "name": "Barcelona2",
-    "coach": "John Doe",
-    "captain": "Jane Doe2"
-  },
-  {
-    "name": "Barcelona3",
-    "coach": "John Doe",
-    "captain": "Jane Doe"
   }
 ]

@@ -32,6 +32,7 @@ app.route('/data')
 			clubs.forEach( club => {
 				test = req.body.newCaptain;
 				if (club.name === req.body.name) {
+					club.coach = req.body.newCoach;
 					club.captain = req.body.newCaptain;
 				}
 			} );
@@ -39,9 +40,10 @@ app.route('/data')
 				'./database.json',
 				JSON.stringify(clubs, null, 2), (err) => err && res.send('Error has been occured while json stringify' + err)
 			);
+			res.send('successfully updated.');
 		} catch(err) {
+			res.send('Error has been occured: ' + err);
 		}
-		res.send('response to PUT method ' + test);
 	})
 	.post(jp, (req, res) => {
 		try {
@@ -52,13 +54,23 @@ app.route('/data')
 				'./database.json',
 				JSON.stringify(clubs, null, 2), (err) => err && res.send('Error has been occured while json stringify' + err)
 			);
+			res.send('successfully created.');
 		} catch (err) {
 			res.send('Error has been occured: ' + err);
 		}
-		res.send('Successfully added data.');
 	})
-	.delete( (req, res) => {
-		res.send('response to DELETE method');
+	.delete(jp, (req, res) => {
+		try {
+			const clubs = JSON.parse(fs.readFileSync('./database.json'));
+			const changedClubs = clubs.filter( (el, index) => index !== req.body.index );
+			fs.writeFile(
+				'./database.json',
+				JSON.stringify(changedClubs, null, 2), (err) => err && res.send('Error has been occured while json stringify' + err)
+			);
+			res.send('successfully deleted.');
+		} catch (err) {
+			res.send('Error has been occured: ' + err);
+		}
 	})
 
 // run server
