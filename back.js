@@ -21,6 +21,8 @@ const app = express();
 
 app.route('/data')
 	.get( (req, res) => {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader('Access-Control-Allow-Methods', 'GET,POST');
 		res.send(JSON.stringify(JSON.parse(fs.readFileSync('./database.json'))));
 	})
 	.put( (req, res) => {
@@ -29,7 +31,10 @@ app.route('/data')
 	.post(jp, (req, res) => {
 		try {
 			//fs.writeFileSync('./database.json', JSON.stringify(req.body));
-			fs.appendFile('./database.json', JSON.stringify(req.body), (err) => err && console.error(err));
+			fs.writeFile(
+				'./database.json',
+				JSON.stringify(req.body), (err) => err && res.send('Error has been occured while json stringify' + err)
+		);
 		} catch (err) {
 			res.send('Error has been occured: ' + err);
 		}
